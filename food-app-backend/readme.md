@@ -22,4 +22,4 @@ heroku config:set NPM_CONFIG_PRODUCTION=false
 so that nodemon and babel was installed
 
 
-## made with ♥ by Kanishka Gour and Samarth Singh
+## made by Samarth Singh and Kanishka Gou
