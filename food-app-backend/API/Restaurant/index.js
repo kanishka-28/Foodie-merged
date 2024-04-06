@@ -18,8 +18,6 @@ const Router = express.Router();
     Method   Get
  */
 
-
-
 Router.get('/', async (req, res) => {
    try {
       const { latitude, longitude, email } = req.query;

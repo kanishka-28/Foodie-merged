@@ -1,6 +1,7 @@
 
 import nodemailer from 'nodemailer';
 export const sendMail = async(email,title="Email from food app",body)=>{
+  console.log(body);
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -9,7 +10,7 @@ export const sendMail = async(email,title="Email from food app",body)=>{
         }
       });
       var mailOptions = {
-        from: 'samarthsingh890.ss@gmail.com',
+        from: 'kanishka.gour.mat20@itbhu.ac.in',
         to: email,
         subject: title,
         html: body
