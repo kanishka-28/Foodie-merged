@@ -6,18 +6,8 @@ import { resizeFile } from "../../Utils/Functions/imageResizer";
 import { setloadingFalse, setloadingTrue } from "../../Redux/Features/Loader/Slice";
 import { useDispatch } from "react-redux";
 
-export default function KitchenDetailsForm({handleSave,kitchenDetails,setkitchenDetails}) {
-  const handleFile = async (e) => {
-    //my style
-    const file = e.target.files[0];
-    if (file.size > 5000000) {
-      toast("Image size should be less than 5 MB");
-      return;
-    }
+export default function KitchenDetailsForm({ handleSave, kitchenDetails, setkitchenDetails }) {
 
-    const image = await resizeFile(file);
-    setkitchenDetails({ ...kitchenDetails, coverImage: image });
-  };
 
   const dispatch = useDispatch();
   const getLocation = async (e) => {
@@ -252,36 +242,6 @@ export default function KitchenDetailsForm({handleSave,kitchenDetails,setkitchen
                   }
                 />
               </div>
-            </div>
-          </div>
-          <div className="sm:w-1/3 h-96 px-4 bg-white space-y-3 sm:p-6">
-            <label className="block text-gray-700 mb-2">Cover Photo</label>
-            <div className="justify-center h-3/4 sm:h-full focus:border-none focus:outline-none focus:ring-1 focus:ring-black border border-gray-300 rounded mt-1 flex items-center">
-              <img
-                src={
-                  kitchenDetails.coverImage
-                    ? kitchenDetails.coverImage
-                    : noFileChosen
-                }
-                alt="Not Found"
-                className={`${kitchenDetails.coverImage ? "w-full" : "w-1/2"
-                  } h-full`}
-              />
-            </div>
-            <div className="flex text-sm text-gray-600">
-              <label
-                htmlFor="file-upload"
-                className="pl-2 cursor-pointer bg-white rounded font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 flex gap-4"
-              >
-                <span>Choose Photo</span>
-                <input
-                  id="file-upload"
-                  name="file-upload"
-                  type="file"
-                  className="sr-only"
-                  onChange={handleFile}
-                />
-              </label>
             </div>
           </div>
         </div>

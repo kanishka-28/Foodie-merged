@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { servicePost } from '../../utlis/connection/api';
 import { setloadingFalse, setloadingTrue } from '../../redux/features/Loader/slice';
 import { useDispatch } from 'react-redux';
+
 export default function OrderModal({ restaurant, foodDetails, open, setopen }) {
 
     const cancelButtonRef = useRef(null);

@@ -9,19 +9,17 @@ import { location } from "../../redux/features/location/selector";
 import { setLocation } from "../../redux/features/location/slice";
 import { storeRestaurant } from "../../redux/features/restaurants/slice";
 import { serviceGet } from "../connection/api";
-
-
-
+import { storeKitchen } from "../../redux/features/kitchens/slice";
 
 export const useRestaurants = () => {
   const loc = useSelector(location);
   const profile = useSelector(user);
   const dispatch = useDispatch();
+
   const getRest = async () => {
     dispatch(setloadingTrue());
     try {
       const { restaurants } = await serviceGet(`restaurant?latitude=${loc?.latitude}&longitude=${loc.longitude}&email=${profile?.email}`);
-     
       dispatch(storeRestaurant(restaurants));
     } catch (error) {
       toast.error(error?.response?.data.message);
@@ -33,11 +31,38 @@ export const useRestaurants = () => {
       dispatch(setloadingFalse());
     }
   }
+  
   useEffect(() => {
     if ( profile?.city || loc.ready ) {
       getRest();
     }
   }, [loc, profile])
+
+}
+
+export const useKitchens = () => {
+  const profile = useSelector(user);
+  const dispatch = useDispatch();
+
+  const getKitchen = async () => {
+    dispatch(setloadingTrue());
+    try {
+      const { kitchens } = await serviceGet(`kitchen?email=${profile?.email}`);
+      dispatch(storeKitchen(kitchens));
+    } catch (error) {
+      toast.error(error?.response?.data.message);
+      if (error.response.status === 401) {
+        dispatch(logout());
+      }
+    }
+    finally {
+      dispatch(setloadingFalse());
+    }
+  }
+
+  useEffect(() => {
+    getKitchen();
+  }, [profile])
 
 }
 

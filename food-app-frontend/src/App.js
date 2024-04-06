@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import GoogleLogin from "./pages/Auth/GoogleLogin";
 import { loadUser } from "./redux/features/auth/slice";
-import { getLocation, useRestaurants } from "./utlis/helperFunctions/location";
+import { getLocation, useKitchens, useRestaurants } from "./utlis/helperFunctions/location";
 import Loader from "./components/Loader/Loader";
 import { isLoading } from "./redux/features/Loader/selector";
 import ScrollToTop from "./utlis/helperFunctions/scrollToTop";
@@ -29,6 +29,7 @@ import { user } from "./redux/features/auth/selector/selector";
 import ForgotPass from "./pages/Auth/forgetPass";
 import ResetPass from "./pages/Auth/ResetPass";
 import SuccessTick from "./pages/Auth/EmailSuccess";
+import Kitchen from "./pages/Kitchen/Kitchen";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
     await dispatch(loadUser());
   };
   useRestaurants();
+  useKitchens();
 
   useEffect(() => {
     loadUserAbout();
@@ -70,6 +72,7 @@ function App() {
           <Route path="search/:searchString" element={<Search />} />
           <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
           <Route path="/restaurant/:id" element={<Restaurant />} />
+          <Route path="/kitchen/:id" element={<Kitchen />} />
           <Route path="/me" >
             <Route index element={<Navigate to="/me/orders" />} />
             <Route path=":tabId" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

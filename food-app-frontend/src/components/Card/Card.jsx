@@ -5,24 +5,24 @@ import { useParams } from "react-router-dom";
 import { allRestaurants } from "../../redux/features/restaurants/selector";
 import FoodCards from "./RestaurantCard";
 
-const AllCards = ({ search = false }) => {
-  const restaurants = useSelector(allRestaurants);
+const AllCards = ({ search = false, initialState }) => {
+  // initial state is either kitchen 
   const { searchString } = useParams();
-  const [restaurant, setrestaurant] = useState(restaurants);
+  const [restaurant, setrestaurant] = useState(initialState);
 
   const getRestaurent = async () => {
-
     if (search) {
-      const arr = restaurants?.filter((e) => e.name.includes(searchString));
+      const arr = initialState?.filter((e) => e.name.includes(searchString));
       setrestaurant(arr);
     }
     else {
-      setrestaurant(restaurants);
+      setrestaurant(initialState);
     }
   };
+
   useEffect(() => {
-    setrestaurant(restaurants);
-  }, [restaurants])
+    setrestaurant(initialState);
+  }, [initialState])
 
 
   useEffect(() => {

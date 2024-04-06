@@ -22,7 +22,6 @@ export default function EditKitchen({ edit = false }) {
     name: "",
     timing: "",
     address: "",
-    coverImage: "",
     city: "",
     contactNumber: "",
     mapLocation: {
@@ -43,7 +42,6 @@ export default function EditKitchen({ edit = false }) {
         city: requiredKitchen.city,
         contactNumber: requiredKitchen.contactNumber,
         mapLocation: requiredKitchen.mapLocation,
-        coverImage: requiredKitchen.coverImage
       })
     }
   }, [])

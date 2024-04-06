@@ -4,7 +4,7 @@ import { capitalize } from '../../utlis/helperFunctions/Capitalise';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const FoodCards = ({restaurant}) => {
+const FoodCards = ({restaurant, category}) => {
     
     useEffect(() => {
         setorders(Math.floor(Math.random() * (1000 - 100 + 1)) + 100);
@@ -15,19 +15,24 @@ const FoodCards = ({restaurant}) => {
     const {name, city, coverImage,_id:id,review} = restaurant;
     return (
         <div className="w-full  h-auto my-4 rounded-lg shadow-lg relative pb-2 md:pb-0 ">
-            <Link to={`/restaurant/${id}`}>
+            {category=='restaurant' ? <Link to={`/restaurant/${id}`}>
                 <div className="rounded-lg shadow w-full h-56">
                     <img src={(coverImage)? coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLoeVu-1OtdDQVJnSFlXBXWZfOvkLG-GBAHLVJHJKZt7AtJay6gxoCBN9k8VKhy1vSaGs&usqp=CAU"} className="w-full h-full rounded-lg shadow-md object-cover" alt="card" />
                 </div>
-            </Link>
+            </Link> :
+            <Link to={`/kitchen/${id}`}>
+                <div className="rounded-lg shadow w-full h-56">
+                    <img src={(coverImage)? coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLoeVu-1OtdDQVJnSFlXBXWZfOvkLG-GBAHLVJHJKZt7AtJay6gxoCBN9k8VKhy1vSaGs&usqp=CAU"} className="w-full h-full rounded-lg shadow-md object-cover" alt="card" />
+                </div>
+            </Link>}
             <div className="text-sm text-white font-semibold  z-0 top-1 l-0">
                 <div className="bg-pink-500 w-32 h-5 px-1 my-2">Pro extra 30% off</div>
                 <div className="bg-blue-500 w-24 h-5 my-2 px-1">40% Off</div>
             </div>
             <div className="flex justify-between m-2 items-center">
-                <Link to={`/restaurant/${id}`} className="text-3xl font-bold font-medium hidden md:block lg:hidden">{name.length > 14 ? capitalize(name.slice(0, 10)) + "..." : capitalize(name)}</Link>
-                <Link to={`/restaurant/${id}`} className="text-3xl font-bold font-medium md:hidden lg:block">{name.length > 25 ? capitalize(name.slice(0, 25)) + "..." : capitalize(name)}</Link>
-                {review[0]?.avgRating &&  <div className="bg-green-600 h-7 rounded-lg text-white p-0.5">{Math.round((review[0]?.avgRating)*100)/100}⭐</div>   }
+                <Link to={`/restaurant/${id}`} className="text-3xl font-bold font-medium hidden md:block lg:hidden">{name?.length > 14 ? capitalize(name?.slice(0, 10)) + "..." : capitalize(name)}</Link>
+                <Link to={`/restaurant/${id}`} className="text-3xl font-bold font-medium md:hidden lg:block">{name?.length > 25 ? capitalize(name?.slice(0, 25)) + "..." : capitalize(name)}</Link>
+                {review&&review[0]?.avgRating &&  <div className="bg-green-600 h-7 rounded-lg text-white p-0.5">{Math.round((review[0]?.avgRating)*100)/100}⭐</div>   }
                
             </div>
             <div className="flex justify-between m-2">

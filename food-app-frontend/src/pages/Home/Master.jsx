@@ -5,7 +5,7 @@ import Nightlife from '../../components/NightLife/NightLife';
 //components
 import Delivery from '../Delivery/Delivery'
 import DiningOut from '../DineOut/DineOut';
-import Kitchen from '../Kitchen/Kitchen';
+import HomeKitchen from '../homeKitchen/homeKitchen';
 // import Nightlife from '../Nightlife';
 // import AddFood from '../ownersTab/addFood';
 // import AllOrders from '../ownersTab/allOrders';
@@ -18,14 +18,14 @@ export default function Master() {
             {type==="delivery" && <Delivery/>}   
         </div>
         <div className="m-4">
+            {type==="kitchen" && <HomeKitchen/>}   
+        </div>
+        {/* <div className="m-4">
             {type==="nightlife" && <Nightlife/>}   
-        </div>
-        <div className="m-4">
-            {type==="kitchen" && <Kitchen/>}   
-        </div>
-        <div className="m-4">
+        </div> */}
+        {/* <div className="m-4">
             {type==="dining" && <DiningOut/>}   
-        </div>
+        </div> */}
         {/* <div className="m-4">
             {type === "addFood" && <AddFood/> }
         </div>

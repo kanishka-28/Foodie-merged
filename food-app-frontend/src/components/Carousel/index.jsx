@@ -51,8 +51,8 @@ const LaptopDelivery = () => {
     prevArrow: <PrevArrow />
   }
   const images = [
-    "https://b.zmtcdn.com/data/o2_assets/dff007e05e2f72a4abc0772c7a8cd0951632716697.png",
-    "https://b.zmtcdn.com/data/dish_images/4f2d979fcb3d1ac70db57b555d112b331634721216.png",
+    "https://thumbs.dreamstime.com/b/indian-vegetarian-lunch-box-tiffin-made-up-stainless-steel-office-workplace-includes-dal-fry-gobi-masala-rice-190422052.jpg",
+    "https://static.vecteezy.com/system/resources/previews/019/023/604/non_2x/front-view-tasty-meat-burger-with-cheese-and-salad-free-photo.jpg",
     "https://b.zmtcdn.com/data/o2_assets/52eb9796bb9bcf0eba64c643349e97211634401116.png",
     "https://b.zmtcdn.com/data/o2_assets/9428a39fba2a97f7470b8f3f26af86af1632716606.png",
     "https://b.zmtcdn.com/data/o2_assets/9694b563c793ea7bddf49f619dd4b7751632716697.png",
