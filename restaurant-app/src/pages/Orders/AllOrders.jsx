@@ -269,7 +269,7 @@ const AllOrders = () => {
                         }}
                         className="mt-4 bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-4 rounded hover:scale-110 ease-in duration-200"
                       >
-                        Reject Order
+                        Decline Order
                       </button>
                     </div>
                   </div>

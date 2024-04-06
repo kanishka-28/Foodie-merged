@@ -8,10 +8,12 @@ import { setloadingFalse, setloadingTrue } from "../../redux/features/Loader/sli
 import { servicePost } from "../../utlis/connection/api";
 
 const Checkout = ({ payload }) => {
+
   const userDetails = useSelector(user);
   const dispatch = useDispatch();
   const id = userDetails._id;
-  const navigate= useNavigate();
+  const navigate = useNavigate();
+
   const PlaceOrder = async () => {
     dispatch(setloadingTrue());
     let arr = payload?.orderDetails;
@@ -24,16 +26,39 @@ const Checkout = ({ payload }) => {
         // return data.food = data.food._id;
         return { ...data, food: data.food._id };
       });
+      const order = await servicePost(`order/new/${id}`, payload);
       payload = await { ...payload, orderDetails: arr };
-      await servicePost(`order/new/${id}`, payload);
+      var options = {
+        "key": "rzp_test_S4ieIzpCYcKoTm", // Enter the Key ID generated from the Dashboard
+        "amount": Number(payload.itemTotal * 100), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Foodie Payment",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order?.res_razor.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "http://localhost:4000/API/order/payment_verification",
+        "prefill": {
+          "name": userDetails.userName,
+          "email": userDetails.email,
+          "contact": "00000xxxx"
+        },
+        "notes": {
+          "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+      var rzp1 = await new window.Razorpay(options);
+      await rzp1.open();
       toast.success("Order has been placed successfully");
       dispatch(initializeCart());
       navigate("/");
     } catch (error) {
       console.log(error);
     }
-    finally{
-        dispatch(setloadingFalse());
+    finally {
+      dispatch(setloadingFalse());
     }
   };
 

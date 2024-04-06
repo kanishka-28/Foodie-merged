@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import { allRestaurants } from "../../redux/features/restaurants/selector";
 import FoodCards from "./RestaurantCard";
 
-const AllCards = ({ search = false, initialState }) => {
-  // initial state is either kitchen 
+const AllCards = ({ search = false, initialState, category }) => {
+  // initial state is either kitchen or restaurant
   const { searchString } = useParams();
   const [restaurant, setrestaurant] = useState(initialState);
 
@@ -36,7 +36,7 @@ const AllCards = ({ search = false, initialState }) => {
           <div className="md:hidden mb-24 ">
             {restaurant?.map((oneRestaurant) => {
               return (
-                <FoodCards key={oneRestaurant._id} restaurant={oneRestaurant} />
+                <FoodCards category={category} key={oneRestaurant._id} restaurant={oneRestaurant} />
               );
             })}
           </div>
@@ -45,7 +45,7 @@ const AllCards = ({ search = false, initialState }) => {
               {restaurant?.map((oneRestaurant) => {
                 return (
                   <div key={oneRestaurant._id} className="w-1/3 lg:w-1/4 ">
-                    <FoodCards restaurant={oneRestaurant} />
+                    <FoodCards category={category} restaurant={oneRestaurant} />
                   </div>
                 );
               })}

@@ -12,7 +12,7 @@ export default function Delivery() {
         <div className="flex flex-col gap-3  ">
             <Brands/>
             <h2 className="font-semibold  text-2xl">Popular Restaurants in your city</h2>
-            <AllCards initialState={restaurants}/>
+            <AllCards category={'restaurant'} initialState={restaurants}/>
         </div>
     )
 }

@@ -12,7 +12,7 @@ import Auth from "./API/Auth";
 import User from "./API/User";
 import Restaurant from './API/Restaurant';
 import Food from "./API/Food";
-import Menu from "./API/Menu";  
+import Menu from "./API/Menu";
 import Order from "./API/orders";
 import Images from "./API/RestaurantPhotos";
 import Reviews from "./API/Review";
@@ -39,8 +39,8 @@ const corsOptions = {
     origin: ['http://localhost:3000', 'http://localhost:3001'],
     optionsSuccessStatus: 200,
     credentials: true
-  };
-  
+};
+
 //   app.use(cors(corsOptions));
 foodie.use(cors(corsOptions));
 

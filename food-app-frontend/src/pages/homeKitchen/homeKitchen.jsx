@@ -14,7 +14,7 @@ export default function HomeKitchen() {
         <div className="flex flex-col gap-3  ">
             <KitchenCarousel/>
             <h2 className="font-semibold  text-2xl">Home Kitchens in your city</h2>
-            <AllCards initialState={kitchens}/>
+            <AllCards initialState={kitchens} category='kitchen'/>
         </div>
     )
 }
