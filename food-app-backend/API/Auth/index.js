@@ -10,7 +10,6 @@ import { UserModel } from "../../models/user/index";
 import getUserStatus from '../../middlewares/getUserStatus';
 
 //validation
-
 import { ValidateSignup, ValidateSignin, ValidateEmail } from "../../validation/auth";
 import { sendMail } from '../../controllers/emailSender';
 
@@ -20,8 +19,7 @@ Route     /loaduser
 descrip   load user using token
 params    none
 access    public
-method    post
-
+method    GET
 */
 
 Router.get("/loaduser", getUserStatus, async (req, res) => {
@@ -37,13 +35,14 @@ Router.get("/loaduser", getUserStatus, async (req, res) => {
     return res.status(500).json({ message: error.message, success: false });
   }
 })
+
+
 /* 
 Route     /signup
-descrip   signup with email and password
+descrip   signup with user details
 params    none
 access    public
-method    post
-
+method    POST
 */
 
 Router.post("/signup", async (req, res) => {
@@ -71,16 +70,14 @@ Router.post("/signup", async (req, res) => {
   }
 })
 
+
 /* 
 Route     /signin
-descrip   signin with userName and password
+descrip   signin with email and password
 params    none
 access    public
-method    post
-
+method    POST
 */
-
-
 
 Router.post("/signin", async (req, res) => {
   try {
@@ -107,12 +104,14 @@ access    public
 method    GET
 */
 
-Router.get("/google", passport.authenticate("google", {
-  scope: [
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email"
-  ],
-}));
+// Router.get("/google", passport.authenticate("google", {
+//   scope: [
+//     "https://www.googleapis.com/auth/userinfo.profile",
+//     "https://www.googleapis.com/auth/userinfo.email"
+//   ],
+// }));
+Router.get("/google", passport.authenticate('google', { scope: ['profile', 'email'] }));
+
 
 /* 
 Route     /google/callback
@@ -120,7 +119,6 @@ descrip   Google signin/signup callback
 params    none
 access    public
 method    GET
-
 */
 
 Router.get("/google/callback", passport.authenticate("google", {
@@ -129,7 +127,8 @@ Router.get("/google/callback", passport.authenticate("google", {
   try {
     res.set('Access-Control-Allow-Origin', 'https://our-foodapp.vercel.app/');
     const token = req.session.passport.user.token;
-    res.redirect(`https://our-foodapp.vercel.app/auth/google/${token}`);
+    res.redirect(`http://localhost:4000/auth/google/${token}`);
+    // res.redirect(`https://our-foodapp.vercel.app/auth/google/${token}`);
     //  res.json({token: req.session.passport.user.token, success:true, user: req.session.passport.user.user});
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
@@ -137,18 +136,12 @@ Router.get("/google/callback", passport.authenticate("google", {
 });
 
 
-
-
-
-
-
 /* 
 Route     /forget-pass
-descrip   forget pass, so lets change it
+descrip   Forgot password? don't worry get email to reset pass
 params    email
 access    public
 method    GET
-
 */
 
 Router.get("/forgot-pass", async (req, res) => {
@@ -171,9 +164,16 @@ Router.get("/forgot-pass", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message, success: false });
   }
-
-
 })
+
+
+/* 
+Route     /reset-pass
+descrip   let's reset the password
+params    email
+access    public
+method    PUT
+*/
 
 Router.put('/reset-pass',async (req,res)=>{
   try {

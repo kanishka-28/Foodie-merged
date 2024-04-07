@@ -15,7 +15,7 @@ export default function Login() {
   });
 
   const googleLogin = async () => {
-    window.location.replace('https://food-app-backend-production-060c.up.railway.app/auth/google')
+    window.location.replace('http://localhost:4000/auth/google')
   }
 
   const handleSubmit = async (event) => { 

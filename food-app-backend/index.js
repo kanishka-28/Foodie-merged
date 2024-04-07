@@ -36,7 +36,7 @@ foodie.use(passport.session());
 
 // const cors = require('cors');
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: [process.envFood_app_PORT, process.env.Rest_app_PORT],
     optionsSuccessStatus: 200,
     credentials: true
 };

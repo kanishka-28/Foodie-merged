@@ -13,8 +13,8 @@ const Router = express.Router();
 
 
 const instanceRazorpay = new Razorpay({
-    key_id: 'rzp_test_S4ieIzpCYcKoTm',
-    key_secret: 'XxZN9LYSkUG0UmzZKZ8JjQgo',
+    key_id: process.env.razorpay_key,
+    key_secret: process.env.razorpay_secret,
 });
 
 

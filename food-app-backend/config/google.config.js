@@ -11,7 +11,7 @@ export default (passport)=>{
         new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "https://food-app-backend-production-81c6.up.railway.app/auth/google/callback"
+            callbackURL: "http://localhost:4000/auth/google/callback"
         },
         async (accessToken, refreshToken, profile, done)=>{
             //creating a new user 
@@ -23,7 +23,6 @@ export default (passport)=>{
             };
             try{
                 //check whether user exists or not
-                
                 const user= await UserModel.findOne({email: newUser.email});
                 if(user){
                     //generating jwt token

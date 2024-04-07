@@ -43,7 +43,7 @@ const Checkout = ({ payload }) => {
           "contact": "00000xxxx"
         },
         "notes": {
-          "address": "Razorpay Corporate Office"
+          "address": "Foodie Corporate Office"
         },
         "theme": {
           "color": "#3399cc"
