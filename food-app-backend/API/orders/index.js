@@ -1,7 +1,6 @@
 import express from 'express'
 import crypto from 'crypto'
 import Razorpay from 'razorpay'
-
 import { OrderModel, RestaurantModel, UserModel } from "../../database/allModels";
 import { ValidateUserId } from "../../validation/user";
 import { ValidateOrder, ValidateOrderId } from "../../validation/order";
@@ -9,6 +8,7 @@ import { ValidateRestaurantId } from "../../validation/restaurant";
 import getUserStatus from "../../middlewares/getUserStatus"
 import { getOrderDetailsRestaurant, getOrderDetailsUser } from './helperFunctions';
 import { sendMail } from '../../controllers/emailSender';
+require("dotenv").config();
 const Router = express.Router();
 
 

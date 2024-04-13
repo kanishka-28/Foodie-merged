@@ -35,11 +35,24 @@ foodie.use(passport.initialize());
 foodie.use(passport.session());
 
 // const cors = require('cors');
+// console.log("process.env")
+// console.log(process.env)
 const corsOptions = {
-    origin: [process.envFood_app_PORT, process.env.Rest_app_PORT],
+    origin: [process.env.Food_app_PORT, process.env.Rest_app_PORT],
     optionsSuccessStatus: 200,
     credentials: true
 };
+
+
+const PORT = process.env.PORT || 4000
+foodie.listen(PORT, () =>
+    ConnectDB().then(() =>
+        console.log("Server is up and running"))
+        .catch((e) =>{
+            console.log(e);
+            console.log("DB connection failed")
+        })
+);
 
 //   app.use(cors(corsOptions));
 foodie.use(cors(corsOptions));
@@ -74,12 +87,12 @@ foodie.get("/", (req, res) => {
     res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
 });
 
-const PORT = process.env.PORT || 4000
-foodie.listen(PORT, () =>
-    ConnectDB().then(() =>
-        console.log("Server is up and running"))
-        .catch(() => console.log("DB connection failed"))
-);
+// const PORT = process.env.PORT || 4000
+// foodie.listen(PORT, () =>
+//     ConnectDB().then(() =>
+//         console.log("Server is up and running"))
+//         .catch(() => console.log("DB connection failed"))
+// );
 
 foodie.use('/.netlify/functions/api', Router);
 module.exports.handler = serverless(foodie);
