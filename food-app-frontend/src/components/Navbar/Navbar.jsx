@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Menu, Transition } from "@headlessui/react";
-import {BsCart4} from "react-icons/bs";
+import { BsCart4 } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated, user } from "../../redux/features/auth/selector/selector";
@@ -30,26 +30,26 @@ const ProfileDisclosure = () => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-        <Menu.Item  >
+          <Menu.Item  >
             {({ active }) => (
               <Link
-               to={"/me"}
+                to={"/me"}
                 className={
                   (active ? "bg-gray-100" : "",
-                  " px-4 py-3  text-gray-700 w-full text-lg")
+                    " px-4 py-3  text-gray-700 w-full text-lg")
                 }
               >
                 My Profile
               </Link>
             )}
           </Menu.Item>
-        <Menu.Item>
+          <Menu.Item>
             {({ active }) => (
               <Link
-               to={"/cart"}
+                to={"/cart"}
                 className={
                   (active ? "bg-gray-100" : "",
-                  "block md:hidden px-4 py-3  text-gray-700 text-lg")
+                    "block md:hidden px-4 py-3  text-gray-700 text-lg")
                 }
               >
                 My Cart
@@ -64,14 +64,14 @@ const ProfileDisclosure = () => {
                 }}
                 className={
                   (active ? "bg-gray-100" : "",
-                  "block px-4 pb-1 md:pt-2 text-gray-700 text-lg")
+                    "block px-4 pb-1 md:pt-2 text-gray-700 text-lg")
                 }
               >
                 Sign out
               </button>
             )}
           </Menu.Item>
-        
+
         </Menu.Items>
       </Transition>
     </Menu>
@@ -87,7 +87,7 @@ const Nav = () => {
   };
   const navigate = useNavigate();
   const onclick = () => {
-    if (searchString.length>0) {
+    if (searchString.length > 0) {
       navigate(`/search/${searchString}`);
     }
   };
@@ -113,12 +113,17 @@ const Nav = () => {
                 placeholder="Search for restaurant "
                 value={searchString}
                 onChange={onchange}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter")
+                    onclick();
+                }}
                 className="p-2 rounded w-full  text-md outline-none border-0"
               />
             </div>
 
             <button
               onClick={onclick}
+              type="submit"
               className=" w-28 h-10 text-center m-1 rounded border-gray-400 border py-1 bg-megenta-400 hover:bg-megenta-500 text-white "
             >
               <p> Search</p>
@@ -127,17 +132,17 @@ const Nav = () => {
         </div>
         {
           !auth ?
-          <div className="flex gap-5 mr-8">
-            <Link to="/auth/login">Log In</Link> 
-            <Link to="/auth/signup">Sign Up</Link> 
-          </div>
-          :
-          <div className="flex gap-16">
-            <Link className="hidden md:block" to={"/cart"} >
-              <BsCart4 className="text-gray-500 text-3xl m-0"/>
-            </Link>
-            <ProfileDisclosure/>
-          </div>
+            <div className="flex gap-5 mr-8">
+              <Link to="/auth/login">Log In</Link>
+              <Link to="/auth/signup">Sign Up</Link>
+            </div>
+            :
+            <div className="flex gap-16">
+              <Link className="hidden md:block" to={"/cart"} >
+                <BsCart4 className="text-gray-500 text-3xl m-0" />
+              </Link>
+              <ProfileDisclosure />
+            </div>
         }
       </div>
       <div className="flex  bg-white items-center px-4 gap-3 shadow-md md:hidden mx-2 ">
@@ -148,13 +153,17 @@ const Nav = () => {
             placeholder="Search for restaurant "
             value={searchString}
             onChange={onchange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter")
+                onclick();
+            }}
             className="p-2 rounded w-full outline-none border-0 text-md"
           />
         </div>
-        
-          <button onClick={onclick} className=" w-28 h-10 text-center m-1 rounded border-gray-400 border py-1 bg-megenta-400 hover:bg-megenta-500 text-white ">
-            <p> Search</p>
-          </button>
+
+        <button type="submit" onClick={onclick} className=" w-28 h-10 text-center m-1 rounded border-gray-400 border py-1 bg-megenta-400 hover:bg-megenta-500 text-white ">
+          <p> Search</p>
+        </button>
       </div>
     </>
   );
@@ -163,7 +172,7 @@ function Navbar() {
   return (
     <>
       <nav>
-        <Nav  />
+        <Nav />
       </nav>
     </>
   );
