@@ -1,6 +1,4 @@
-# Getting Started with Food app 🍕
-
-This project was made with ♥ by Samarth Singh and Kanishka Gour.
+# Getting Started with Foodie 🍕
 
 **Note: You need to give location permission in order to run this app**
 
@@ -10,20 +8,26 @@ Using this project directory, you can order:
 
 ### `Food From your city`
 
-only if you login 😉
+By all the restaurants of your city and homemade food by Home Kitchen
 
+Only if you login 😉
 
 ### `food based on your location`
 
-Your dont need to login for this
-
-* * *
-
-You can order any food item directly or add it into a cart
-
-* * *
+Get your nearby restaurants and you don't need to login for this
 
 
-### `Review any food item you like`
+#### You can order any food item directly or add it into a cart
 
-### `Get location of your favourite restaurant`
+
+## Review food
+
+You can add reviews to the food and rate it!!
+
+
+## Smooth Transaction
+
+Payment can be done using Card, UPI or Netbanking through Razorpay
+
+
+##### This project is made by Kanishka Gour and Samarth Singh.
