@@ -53,6 +53,57 @@ export const getOrderDetailsUser = async (user)=>{
    
     
 }
+
+export const getOrderDetailsKitchen = async (kitchen)=>{
+        console.log(kitchen);
+        const orders = await OrderModel.aggregate([
+            {
+                $match:{
+                    $expr:{
+                        $eq:['$kitchen',ObjectId(kitchen)]
+                      }
+                }
+            },
+            {
+                $lookup:{
+                    from:"foods",
+                    foreignField:"_id",
+                    localField:"orderDetails.food",
+                    as:'foodItems'
+                }
+            },
+            {
+                $lookup:{
+                    from:"users",
+                   let:{user:"$user"},
+                   pipeline:[
+                    {
+                        $match:{
+                            $expr:{
+                                $eq:['$_id',"$$user"]
+                              }
+                        }
+                    },
+                    {
+                        $project:{
+                            userName:1,
+                            address:1,
+                            city:1
+                        }
+                    }
+                   ],
+                   as: "user"
+                }
+            },
+            {
+                $sort:{
+                    updatedAt: -1
+                }
+            }
+        ]) 
+        return orders;
+}
+
 export const getOrderDetailsRestaurant = async (restaurant)=>{
    
         const orders = await OrderModel.aggregate([
@@ -99,9 +150,6 @@ export const getOrderDetailsRestaurant = async (restaurant)=>{
                     updatedAt: -1
                 }
             }
-        ])
-      
+        ]) 
         return orders;
-   
-    
 }

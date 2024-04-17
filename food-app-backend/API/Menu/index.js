@@ -26,6 +26,7 @@ const Router = express.Router();
         return res.status(500).json({message: error.message,sucess: false});
     }
 });
+
 Router.put("/:_id",getUserStatus,async (req,res)=>{
     try{
        await ValidateRestaurantId(req.params);

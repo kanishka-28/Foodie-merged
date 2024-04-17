@@ -23,33 +23,17 @@ Router.get("/:_id", async (req, res) => {
    try {
       const { _id } = req.params;
       ValidateRestaurantId({ _id });
-      const foods = await FoodModel.find({ restaurant: _id });
-      return res.json({ foods, success: true });
+      const foodsKitchen = await FoodModel.find({ kitchen: _id });
+      const foodsRestuarant = await FoodModel.find({ restaurant: _id });
+      if (foodsKitchen) return res.json({ foods: foodsKitchen, success: true });
+      if (foodsRestuarant) return res.json({ foods: foodsRestuarant, success: true });
+      return res.json({ foods: [], success: true });
    }
    catch (error) {
       return res.status(500).json({ message: error.message, success: false });
    }
 });
 
-/* 
-    Route    /kitchen/
-    Des      Get all foods based on particular kitchen 
-    Params    _id
-    Access    Public
-    Method   Get
- */
-
-Router.get("/kitchen/:_id", async (req, res) => {
-   try {
-      const { _id } = req.params;
-      ValidateRestaurantId({ _id });
-      const foods = await FoodModel.find({ kitchen: _id });
-      return res.json({ foods, success: true });
-   }
-   catch (error) {
-      return res.status(500).json({ message: error.message, success: false });
-   }
-});
 
 /* 
    Route    /r
@@ -77,7 +61,7 @@ Router.get("/r/:category", async (req, res) => {
 
 /* 
    Route    /food/
-   Des      post food from a particular restaurant
+   Des      add new food 
    Params   category
    Access   Public
    Method   post
@@ -87,42 +71,26 @@ Router.post("/add/:id", getUserStatus, async (req, res) => {
    try {
       if (req.user._id.toString() === req.body.user) {
          const { id } = req.params;
+         const { status } = req.body;
+         console.log(req.body);
          await ValidateRestaurantId({ _id: id });
-         const check = await FoodModel.find({ restaurant: id, name: req.body.name });
-         if (check.length !== 0) {
-            return res.status(409).json({ message: "food item already exists" });
+         if (status === "restuarnt") {
+            const check = await FoodModel.find({ restaurant: id, name: req.body.name });
+            if (check.length !== 0) {
+               return res.status(409).json({ message: "food item already exists" });
+            }
+            const food = await FoodModel.create({ ...req.body, restaurant: id });
+            return res.json({ food, success: true })
          }
-         const food = await FoodModel.create({ ...req.body, restaurant: id });
-         return res.json({ food, success: true });
-      }
-      else {
-         return res.status(401).json({ message: "Not Authorized" });
-      }
-   }
-   catch (error) {
-      return res.status(500).json({ message: error.message, success: true });
-   }
-})
-
-/* 
-   Route    /food/
-   Des      post food from a particular kitchen
-   Params   category
-   Access   Public
-   Method   post
-*/
-
-Router.post("/add/kitchen/:id", getUserStatus, async (req, res) => {
-   try {
-      if (req.user._id.toString() === req.body.user) {
-         const { id } = req.params;
-         await ValidateRestaurantId({ _id: id });
-         const check = await FoodModel.find({ kitchen: id, name: req.body.name });
-         if (check.length !== 0) {
-            return res.status(409).json({ message: "Food item already exists" });
+         else {
+            const check = await FoodModel.find({ kitchen: id, name: req.body.name });
+            if (check.length !== 0) {
+               return res.status(409).json({ message: "food item already exists" });
+            }
+            const food = await FoodModel.create({ ...req.body, kitchen: id, restaurant: null });
+            console.log(food);
+            return res.json({ food, success: true })
          }
-         const food = await FoodModel.create({ ...req.body, kitchen: id });
-         return res.json({ food, success: true });
       }
       else {
          return res.status(401).json({ message: "Not Authorized" });

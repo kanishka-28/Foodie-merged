@@ -6,8 +6,9 @@ import { ValidateUserId } from "../../validation/user";
 import { ValidateOrder, ValidateOrderId } from "../../validation/order";
 import { ValidateRestaurantId } from "../../validation/restaurant";
 import getUserStatus from "../../middlewares/getUserStatus"
-import { getOrderDetailsRestaurant, getOrderDetailsUser } from './helperFunctions';
+import { getOrderDetailsKitchen, getOrderDetailsRestaurant, getOrderDetailsUser } from './helperFunctions';
 import { sendMail } from '../../controllers/emailSender';
+import { KitchenModel } from '../../models/kitchen';
 require("dotenv").config();
 const Router = express.Router();
 
@@ -57,15 +58,21 @@ method    GET
 Router.get("/res/:_id", getUserStatus, async (req, res) => {
     try {
         await ValidateRestaurantId(req.params);
+
         const { _id } = req.params;
         // const orders = await OrderModel.find({
         //     restaurant: _id
         // }).populate('orderDetails.food');
-        const orders = await getOrderDetailsRestaurant(_id);
-        if (!orders) {
-            return res.status(404).json({ error: "Orders not found" });
+        const orders_rest = await getOrderDetailsRestaurant(_id);
+        const orders_kitchen = await getOrderDetailsKitchen(_id);
+        console.log(orders_kitchen);
+        if(orders_rest){
+            return res.status(200).json({ orders: orders_rest, success: true });
         }
-        return res.status(200).json({ orders, success: true });
+        if(orders_kitchen){
+            return res.status(200).json({ orders: orders_kitchen, success: true });
+        }
+            return res.status(404).json({ error: "Orders not found" });
     }
     catch (error) {
         return res.status(500).json({ message: error.message, success: false });
@@ -87,17 +94,24 @@ Router.post("/new/:_id", getUserStatus, async (req, res) => {
         if (req.user._id.toString() !== _id) {
             return res.status(401).send("Not Authorized")
         }
+        console.log(req.body);
         
         const order = await instanceRazorpay.orders.create({
             amount: Number(req.body.itemTotal*100),  // amount in the smallest currency unit
             currency: "INR",
         }) 
 
-        // const addNewOrder = await OrderModel.create(req.body);
-        // const restaurant = await RestaurantModel.findById(req.body.restaurant);
-        // const { email } = await UserModel.findById(restaurant.user);
-        // await sendMail(email, 'Incoming order for you!!', `<h4>A new Order has arrived at your Restaurant, ${restaurant.name}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${req.body.restaurant}">Manage it here</a>`)
-        return res.status(200).json({ order: 'addNewOrder', res_razor:order ,success: true });
+        const addNewOrder = await OrderModel.create(req.body);
+        let restaurant;
+        if(req.body.type == "resturant"){
+            restaurant = await RestaurantModel.findById(req.body.restaurant);
+        }
+        if(req.body.type == "kitchen"){
+            restaurant = await KitchenModel.findById(req.body.restaurant);
+        }
+        const { email } = await UserModel.findById(restaurant.user);
+        await sendMail(email, 'Incoming order for you!!', `<h4>A new Order has arrived at your ${req.body.type}, ${restaurant.name}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${req.body.restaurant}">Manage it here</a>`)
+        return res.status(200).json({ order: addNewOrder, res_razor:order ,success: true });
     }
     catch (error) {
         console.log({error});
@@ -153,16 +167,18 @@ Router.put("/update/:_id", getUserStatus, async (req, res) => {
 
         const user = await UserModel.findById(updatedOrder.user);
         const restaurant = await RestaurantModel.findById(updatedOrder.restaurant);
-        const { email } = await UserModel.findById(restaurant.user);
+        const kitchen = await KitchenModel.findById(updatedOrder.restaurant);
+        const { email } = await UserModel.findById(restaurant?.user || kitchen?.user);
+        console.log(user);
         if (status == "cancelled") {
             await sendMail(email, 'Order Cancelled!!', `<h4>One of your  Orders has been cancelled by the user, ${user.userName}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${updatedOrder.restaurant}">Check here</a>`)
 
         }
         else if (status == "accepted") {
-            await sendMail(user.email, `Order ${status}!!`, `<h4>Your Order has been ${status} by the the Restaurant, ${restaurant.name}:</h4><a href="https://our-foodapp.vercel.app/me/orders">Check here</a>`)
+            await sendMail(user.email, `Order ${status}!!`, `<h4>Your Order has been ${status} by the the Restaurant, ${restaurant?.name || kitchen?.name}:</h4><a href="https://our-foodapp.vercel.app/me/orders">Check here</a>`)
         }
         else if (status == "rejected") {
-            await sendMail(user.email, `Order declined :(`, `<h4>Your Order has been declined by the the Restaurant, ${restaurant.name}:</h4><a href="https://our-foodapp.vercel.app/me/orders">Check here</a>`)
+            await sendMail(user.email, `Order declined :(`, `<h4>Your Order has been declined by the the Restaurant, ${restaurant?.name || kitchen?.name}:</h4><a href="https://our-foodapp.vercel.app/me/orders">Check here</a>`)
         }
         return res.status(200).json({ message: "Order updated", success: true });
 
