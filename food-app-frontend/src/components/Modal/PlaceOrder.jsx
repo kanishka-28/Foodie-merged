@@ -10,10 +10,12 @@ import { servicePost } from '../../utlis/connection/api';
 import { setloadingFalse, setloadingTrue } from '../../redux/features/Loader/slice';
 import { useDispatch } from 'react-redux';
 
-export default function OrderModal({ restaurant, foodDetails, open, setopen }) {
+export default function OrderModal({ restaurant, foodDetails, open, setopen, status }) {
 
+    console.log("status", status);
     const cancelButtonRef = useRef(null);
     const userDetails = useSelector(user);
+    console.log(restaurant,foodDetails);
     const [totalprice, settotalprice] = useState();
     const dispatch = useDispatch();
     const [orderDetails, setorderDetails] = useState({
@@ -26,15 +28,14 @@ export default function OrderModal({ restaurant, foodDetails, open, setopen }) {
         settotalprice(foodDetails?.price)
         setorderDetails({ ...orderDetails, food: foodDetails?._id, price: foodDetails.price });
     }, [foodDetails])
-
     const placeOrder = async () => {
         dispatch(setloadingTrue());
         try {
             setopen(false)
-            await servicePost(`order/new/${userDetails._id}`, {user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: (orderDetails.quantity * orderDetails.price)});
+            await servicePost(`order/new/${userDetails._id}`, {user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: (orderDetails.quantity * orderDetails.price), type: status });
             toast.success('Order has been placed successfully')
         } catch (error) {
-            console.log(error);
+            console.log({error});
         }
         finally {
             dispatch(setloadingFalse());

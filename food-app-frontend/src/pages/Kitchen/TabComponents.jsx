@@ -1,8 +1,8 @@
 import React from "react";
-import Overview from "../../components/restaurantComponent/overview";
-import Menu from "../../components/restaurantComponent/menu";
-import Order from "../../components/restaurantComponent/order";
-import Reviews from "../../components/restaurantComponent/reviews";
+import Overview from "../../components/kitchenComponent/overview";
+import Menu from "../../components/kitchenComponent/menu";
+import Order from "../../components/kitchenComponent/order";
+import Reviews from "../../components/kitchenComponent/reviews";
 
 //Components
 

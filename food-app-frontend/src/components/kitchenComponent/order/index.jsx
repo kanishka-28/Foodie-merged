@@ -34,6 +34,7 @@ const Order = ({restaurant}) => {
         dispatch(setloadingTrue());
         try {
             const {foods} = await serviceGet(`food/${id}`);
+            console.log("foods", foods);
             setfoods(foods);
         } catch (error) {
             console.log({error});
@@ -65,7 +66,7 @@ const Order = ({restaurant}) => {
                     </div>}
                 </div>
                 <div ref={startOfFoods} className='grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                    {foods.length !== 0 ? foods?.map((food) => {
+                    {foods && foods?.length !== 0 ? foods?.map((food) => {
                         return (
                             <FoodCard key={food._id} food={food} setopen={setopen} setopenCart={setopenCart} setfoodDetails={setfoodDetails}/>
                         )
@@ -80,7 +81,7 @@ const Order = ({restaurant}) => {
     }
     return (
         <div>
-            <OrderModal restaurant={restaurant} foodDetails={foodDetails} open={open} setopen={setopen}/>
+            <OrderModal restaurant={restaurant} foodDetails={foodDetails} open={open} setopen={setopen} status={"kitchen"}/>
             <AddToCartModal restaurant={restaurant} foodDetails={foodDetails} open={openCart} setopen={setopenCart}/>
             <LapOrder />
         </div>
