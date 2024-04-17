@@ -18,7 +18,7 @@ const RestaurantGallery = ({ requiredRestaurant,uploadedImages }) => {
 
     return (
         <>
-            <AddFoodModal/>
+            <AddFoodModal status="restaurant"/>
             <div className="w-full ">
                 <img src={uploadedImages?.length > 0 ? uploadedImages[0].url : "https://b.zmtcdn.com/data/pictures/9/19227209/1f3b5f252dc37e874e8e96e82e5ed277.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*"} className="md:hidden block w-full h-96 object-cover " alt="bigImage" />
                 <div className="lg:m-4 hidden md:flex items-center h-96 w-full ">

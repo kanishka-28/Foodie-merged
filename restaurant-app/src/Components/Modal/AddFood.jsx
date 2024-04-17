@@ -14,7 +14,7 @@ import { resizeFile } from '../../Utils/Functions/imageResizer';
 import { setOpen } from '../../Redux/Features/Food/Slice';
 import { openModal } from '../../Redux/Features/Food/Selector/Selector';
 
-export default function AddFoodModal() {
+export default function AddFoodModal({status}) {
 
     const cancelButtonRef = useRef(null)
     const user = useSelector(getUser);
@@ -30,8 +30,9 @@ export default function AddFoodModal() {
         category: '',
         price: '',
         restaurant: '',
+        status: status
     })
-
+    console.log(status, details); 
     const { id } = useParams();
 
     const onClose=()=>{
@@ -60,6 +61,7 @@ export default function AddFoodModal() {
             dispatch(setOpen(false));
         }
     }
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={onClose}>

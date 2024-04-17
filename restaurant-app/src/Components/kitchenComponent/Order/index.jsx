@@ -8,7 +8,6 @@ import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { FcGoogle } from "react-icons/fc"
 import { AiOutlineClose } from "react-icons/ai";
-import AddFoodModal from '../../Modal/AddFood';
 import FoodCards from '../../Cards/FoodCards';
 import EditFoodModal from '../../Modal/EditFood';
 import { serviceGet } from '../../../Utils/Api/api';

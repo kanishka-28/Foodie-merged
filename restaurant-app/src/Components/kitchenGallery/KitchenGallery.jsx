@@ -18,7 +18,7 @@ const KitchenGallery = ({ requiredKitchen }) => {
 
     return (
         <>
-            <AddFoodModal/>
+            <AddFoodModal status="kitchen"/>
             <div className="w-full ">
                 <div className="m-4 md:flex justify-between">
                     <div className='flex items-center gap-5 flex-wrap'><h2>{requiredKitchen?.name}</h2>

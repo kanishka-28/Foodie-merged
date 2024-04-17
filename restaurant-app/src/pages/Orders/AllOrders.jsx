@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import Navbar from "../../Components/Navbar/Navbar";
 
 const AllOrders = () => {
-  const [openTab, setOpenTab] = React.useState("D");
+  const [openTab, setOpenTab] = useState("D");
   const [order, setorder] = useState([]);
   const [acceptedorder, setacceptedorder] = useState([]);
   const [rejectedorder, setrejectedorder] = useState([]);
@@ -25,6 +25,7 @@ const AllOrders = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const getOrders = async () => {
     dispatch(setloadingTrue());
     try {
@@ -52,12 +53,10 @@ const AllOrders = () => {
   }, [acceptedorder])
 
   useEffect(() => {
-    if (!state?.requiredRestaurant) {
+    if (!state?.requiredRestaurant && !state?.requiredKitchen) {
       navigate("/");
     }
     getOrders();
-
-
   }, []);
 
   return (
@@ -205,8 +204,8 @@ const AllOrders = () => {
               )}
             </div>
             <div className={openTab === "P" ? "block" : "hidden"} id="link1">
-              {pendingorder.length !== 0 ? (
-                pendingorder.map((data) => (
+              {pendingorder?.length !== 0 ? (
+                pendingorder?.map((data) => (
                   <div
                     key={order}
                     className="bg-yellow-100 my-2 mx-auto lg:w-3/4 flex justify-between items-center border-b border-gray-200 shadow-lg px-2 align-center py-6"
@@ -282,8 +281,8 @@ const AllOrders = () => {
 
             </div>
             <div className={openTab === "R" ? "block" : "hidden"} id="link1">
-              {rejectedorder.length !== 0 ? (
-                rejectedorder.map((data) => {
+              {rejectedorder?.length !== 0 ? (
+                rejectedorder?.map((data) => {
                   if (data.status === "rejected")
                     return <div
                       key={data}
