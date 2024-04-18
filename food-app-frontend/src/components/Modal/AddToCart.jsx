@@ -7,7 +7,7 @@ import { addToCart } from '../../redux/features/cart/slice';
 import { user } from '../../redux/features/auth/selector/selector';
 import toast from 'react-hot-toast';
 
-export default function AddToCartModal({ restaurant, foodDetails, open, setopen }) {
+export default function AddToCartModal({ restaurant, foodDetails, open, setopen, type }) {
 
     const cancelButtonRef = useRef(null);
     const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export default function AddToCartModal({ restaurant, foodDetails, open, setopen 
     }, [foodDetails])
 
     const addToCartHandle = () => {
-        dispatch(addToCart({ user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: totalprice }));
+        dispatch(addToCart({ user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: totalprice, type: type }));
         setopen(false);
     }
 

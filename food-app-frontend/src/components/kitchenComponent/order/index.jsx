@@ -82,7 +82,7 @@ const Order = ({restaurant}) => {
     return (
         <div>
             <OrderModal restaurant={restaurant} foodDetails={foodDetails} open={open} setopen={setopen} status={"kitchen"}/>
-            <AddToCartModal restaurant={restaurant} foodDetails={foodDetails} open={openCart} setopen={setopenCart}/>
+            <AddToCartModal restaurant={restaurant} foodDetails={foodDetails} open={openCart} setopen={setopenCart} type={"kitchen"}/>
             <LapOrder />
         </div>
     )

@@ -5,7 +5,7 @@ import Checkout from "../../components/Cart/checkout";
 import Product from "../../components/Cart/product";
 import Navbar from "../../components/Navbar/Navbar";
 import { user } from "../../redux/features/auth/selector/selector";
-import { itemTotal, orderDetails, restaurantId, status } from "../../redux/features/cart/selector/selector";
+import { itemTotal, orderDetails, restaurantId, status, type } from "../../redux/features/cart/selector/selector";
 
 const Cart = () => {
 
@@ -14,6 +14,7 @@ const Cart = () => {
   const restaurant = useSelector(restaurantId);
   const items = useSelector(orderDetails);
   const total = useSelector(itemTotal);
+  const typeName = useSelector(type);
 
   return (
     <>
@@ -66,7 +67,7 @@ const Cart = () => {
               Continue Shopping
             </p>
           </div>
-          <Checkout payload={{ user: userDetails._id, restaurant, orderDetails: items, itemTotal: total }} />
+          <Checkout payload={{ user: userDetails._id, restaurant, orderDetails: items, itemTotal: total, type: typeName }} />
         </div>
       </div>
     </>

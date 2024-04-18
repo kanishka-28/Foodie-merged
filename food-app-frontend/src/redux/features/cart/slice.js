@@ -7,6 +7,7 @@ const initialState = {
     restaurant: '',
     orderDetails: [],
     itemTotal: 0,
+    type: '',
 }
 
 const cartSlice = createSlice({
@@ -28,6 +29,7 @@ const cartSlice = createSlice({
             if(state.first){
                 state.user = action.payload.user
                 state.restaurant = action.payload.restaurant
+                state.type = action.payload.type
                 state.orderDetails = [action.payload.orderDetails]
                 state.first = false;
             }

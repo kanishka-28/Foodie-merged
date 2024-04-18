@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { servicePost } from '../../utlis/connection/api';
 import { setloadingFalse, setloadingTrue } from '../../redux/features/Loader/slice';
 import { useDispatch } from 'react-redux';
+import { razorPay } from '../../utlis/helperFunctions/razorpay';
 
 export default function OrderModal({ restaurant, foodDetails, open, setopen, status }) {
 
@@ -28,12 +29,15 @@ export default function OrderModal({ restaurant, foodDetails, open, setopen, sta
         settotalprice(foodDetails?.price)
         setorderDetails({ ...orderDetails, food: foodDetails?._id, price: foodDetails.price });
     }, [foodDetails])
+
     const placeOrder = async () => {
         dispatch(setloadingTrue());
         try {
             setopen(false)
-            await servicePost(`order/new/${userDetails._id}`, {user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: (orderDetails.quantity * orderDetails.price), type: status });
-            toast.success('Order has been placed successfully')
+            const itemTotal = (orderDetails.quantity * orderDetails.price);
+            const order = await servicePost(`order/new/${userDetails._id}`, {user: userDetails._id, restaurant: restaurant._id, orderDetails, itemTotal: (orderDetails.quantity * orderDetails.price), type: status });
+            // toast.success('Order has been placed successfully')
+            razorPay({userDetails, itemTotal, order});
         } catch (error) {
             console.log({error});
         }
