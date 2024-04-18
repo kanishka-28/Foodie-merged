@@ -65,14 +65,13 @@ Router.get("/res/:_id", getUserStatus, async (req, res) => {
         // }).populate('orderDetails.food');
         const orders_rest = await getOrderDetailsRestaurant(_id);
         const orders_kitchen = await getOrderDetailsKitchen(_id);
-        console.log(orders_kitchen);
-        if(orders_rest){
+        if (orders_rest) {
             return res.status(200).json({ orders: orders_rest, success: true });
         }
-        if(orders_kitchen){
+        if (orders_kitchen) {
             return res.status(200).json({ orders: orders_kitchen, success: true });
         }
-            return res.status(404).json({ error: "Orders not found" });
+        return res.status(404).json({ error: "Orders not found" });
     }
     catch (error) {
         return res.status(500).json({ message: error.message, success: false });
@@ -94,50 +93,45 @@ Router.post("/new/:_id", getUserStatus, async (req, res) => {
         if (req.user._id.toString() !== _id) {
             return res.status(401).send("Not Authorized")
         }
-        console.log(req.body);
-        
+
         const order = await instanceRazorpay.orders.create({
-            amount: Number(req.body.itemTotal*100),  // amount in the smallest currency unit
+            amount: Number(req.body.itemTotal * 100),  // amount in the smallest currency unit
             currency: "INR",
-        }) 
+        })
 
         const addNewOrder = await OrderModel.create(req.body);
         let restaurant;
-        if(req.body.type == "resturant"){
+        if (req.body.type == "resturant") {
             restaurant = await RestaurantModel.findById(req.body.restaurant);
         }
-        if(req.body.type == "kitchen"){
+        if (req.body.type == "kitchen") {
             restaurant = await KitchenModel.findById(req.body.restaurant);
         }
-        const { email } = await UserModel.findById(restaurant.user);
-        await sendMail(email, 'Incoming order for you!!', `<h4>A new Order has arrived at your ${req.body.type}, ${restaurant.name}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${req.body.restaurant}">Manage it here</a>`)
-        return res.status(200).json({ order: addNewOrder, res_razor:order ,success: true });
+        const user = await UserModel.findById(restaurant?.user);
+        if (user) {
+            const email=user.email;
+            await sendMail(email, 'Incoming order for you!!', `<h4>A new Order has arrived at your ${req.body.type}, ${restaurant.name}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${req.body.restaurant}">Manage it here</a>`)
+        }
+        return res.status(200).json({ order: addNewOrder, res_razor: order, success: true });
     }
     catch (error) {
-        console.log({error});
+        console.log({ error });
         return res.status(500).json({ message: error.message, success: false });
     }
 });
 
 // call back for razorpay 
-Router.post("/payment_verification", getUserStatus, async (req, res) => {
+Router.post("/payment_verification", async (req, res) => {
     try {
-        console.log('coming');
-        const {razorpay_payment_id, razorpay_order_id, razorpay_signature} = req.body;
-        const body_data = razorpay_order_id+"|"+razorpay_payment_id;
-        const expected_signature = crypto.createHmac('sha256','XxZN9LYSkUG0UmzZKZ8JjQgo').update(body_data).digest("hex")
-        console.log(expected_signature, razorpay_signature);
-        if(expected_signature===razorpay_signature){
+        const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+        const body_data = razorpay_order_id + "|" + razorpay_payment_id;
+        const expected_signature = crypto.createHmac('sha256', 'XxZN9LYSkUG0UmzZKZ8JjQgo').update(body_data).digest("hex")
+        if (expected_signature === razorpay_signature) {
             res.redirect('https://ruperhat.com/wp-content/uploads/2020/06/Paymentsuccessful21.png');
-            return res.status(200).json({ message: "Payment made successfully", success: true });
-        }
-        else {
-            res.redirect('https://miro.medium.com/v2/resize:fit:810/1*OkeqV425CNZUQT2HSkTnJA.png');
-            return res.status(500).json({ message: "Payment failed", success: false });
         }
     } catch (error) {
-        console.log({error});
-        return res.status(500).json({ message: error.message, success: false });
+        console.log({ error });
+        res.redirect('https://miro.medium.com/v2/resize:fit:810/1*OkeqV425CNZUQT2HSkTnJA.png');
     }
 });
 
@@ -169,7 +163,6 @@ Router.put("/update/:_id", getUserStatus, async (req, res) => {
         const restaurant = await RestaurantModel.findById(updatedOrder.restaurant);
         const kitchen = await KitchenModel.findById(updatedOrder.restaurant);
         const { email } = await UserModel.findById(restaurant?.user || kitchen?.user);
-        console.log(user);
         if (status == "cancelled") {
             await sendMail(email, 'Order Cancelled!!', `<h4>One of your  Orders has been cancelled by the user, ${user.userName}:</h4><a href="https://restaurant-app-azure.vercel.app/restaurant/orders/${updatedOrder.restaurant}">Check here</a>`)
 

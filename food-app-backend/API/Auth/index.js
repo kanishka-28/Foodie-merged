@@ -147,7 +147,6 @@ method    GET
 Router.get("/forgot-pass", async (req, res) => {
   try {
     const { email,type } = req.query;
-    // console.log(type);
     if(type!=='user' && type!=='restaurant'){
       return res.status(400).json({message:"Invalid Params",success:false});
     }

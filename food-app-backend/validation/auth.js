@@ -10,7 +10,6 @@ export const ValidateSignup = (userData) => {
     city: joi.string(),
     status: joi.string(),
   });
-  // console.log(userData);
 return Schema.validateAsync(userData);
 
 };

@@ -72,7 +72,6 @@ Router.post("/add/:id", getUserStatus, async (req, res) => {
       if (req.user._id.toString() === req.body.user) {
          const { id } = req.params;
          const { status } = req.body;
-         console.log(req.body);
          await ValidateRestaurantId({ _id: id });
          if (status === "restuarnt") {
             const check = await FoodModel.find({ restaurant: id, name: req.body.name });
@@ -88,7 +87,6 @@ Router.post("/add/:id", getUserStatus, async (req, res) => {
                return res.status(409).json({ message: "food item already exists" });
             }
             const food = await FoodModel.create({ ...req.body, kitchen: id, restaurant: null });
-            console.log(food);
             return res.json({ food, success: true })
          }
       }

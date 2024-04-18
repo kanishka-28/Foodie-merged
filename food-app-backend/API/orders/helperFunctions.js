@@ -55,7 +55,6 @@ export const getOrderDetailsUser = async (user)=>{
 }
 
 export const getOrderDetailsKitchen = async (kitchen)=>{
-        console.log(kitchen);
         const orders = await OrderModel.aggregate([
             {
                 $match:{

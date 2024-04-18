@@ -1,7 +1,6 @@
 
 import nodemailer from 'nodemailer';
 export const sendMail = async(email,title="Email from food app",body)=>{
-  console.log(body);
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
