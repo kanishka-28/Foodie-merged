@@ -1,9 +1,5 @@
 import axios from 'axios';
-
-// const SERVICE_URL = "https://food-app-backend-production-060c.up.railway.app";
-// const SERVICE_URL = "https://our-food-app.herokuapp.com";
-const SERVICE_URL = "http://localhost:4000";
-// const SERVICE_URL = "https://foodie-backend.netlify.app/";
+import { SERVICE_URL } from './variables';
 
 export const serviceGet = async (path, headers) => {
     return new Promise((resolve, reject) => {

@@ -4,6 +4,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { login, setLoginTrue } from "../../redux/features/auth/slice";
 import { setloadingFalse, setloadingTrue } from "../../redux/features/Loader/slice";
+import { SERVICE_URL } from "../../utlis/connection/variables";
 
 export default function Login() {
   const [showPass, setshowPass] = useState(false);
@@ -15,7 +16,7 @@ export default function Login() {
   });
 
   const googleLogin = async () => {
-    window.location.replace('http://localhost:4000/auth/google')
+    window.location.replace(`${SERVICE_URL}/auth/google`)
   }
 
   const handleSubmit = async (event) => { 

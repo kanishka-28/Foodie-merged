@@ -65,7 +65,6 @@ routeConfig(passport);
 
 
 //for application routes
-//localhost:4000/auth/signup 
 
 foodie.use("/auth", Auth);
 foodie.use('/user', User);
